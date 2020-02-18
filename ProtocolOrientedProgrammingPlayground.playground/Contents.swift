@@ -1,3 +1,5 @@
+// https://www.raywenderlich.com/6742901-protocol-oriented-programming-tutorial-in-swift-5-1-getting-started
+
 import Foundation
 
 // Hatching the Egg
@@ -99,4 +101,69 @@ Penguin(name: "King Penguin").canFly  // false
 
 // Extending Protocols
 
+// CustomStringConvertible protocol confirmation is added to Bird
 UnladenSwallow.african
+
+// Effects on the Swift Standard Library
+
+let numbers = [10, 20, 30, 40, 50, 60]
+let slice = numbers[1...3]
+let reversedSlice = slice.reversed()
+
+let answer = reversedSlice.map { $0 * 10 }
+print(answer)
+
+// Off To the Races
+
+class Motorcycle {
+    var name: String
+    var speed: Double
+
+    init(name: String) {
+        self.name = name
+        speed = 200.0
+    }
+}
+
+// Bringing it all together
+
+// To unify these disparate types, you need a common protocol for racing. You can manage this without even touching the original model definitions thanks to a fancy idea called retroactive modeling.
+
+protocol Racer {
+    var speed: Double { get }
+}
+
+extension FlappyBird: Racer {
+    var speed: Double {
+        airSpeedVelocity
+    }
+}
+
+extension SwiftBird: Racer {
+    var speed: Double {
+        airSpeedVelocity
+    }
+}
+
+extension Penguin: Racer {
+    var speed: Double {
+        42
+    }
+}
+
+extension UnladenSwallow: Racer {
+    var speed: Double {
+        canFly ? airSpeedVelocity : 0.0
+    }
+}
+
+extension Motorcycle: Racer {}
+
+let racers: [Racer] =
+[UnladenSwallow.african,
+ UnladenSwallow.european,
+ UnladenSwallow.unknown,
+ Penguin(name: "King Penguin"),
+ SwiftBird(version: 5.1),
+ FlappyBird(name: "Felipe", flappyAmplitude: 3.0, flappyFrequency: 20.0),
+ Motorcycle(name: "Giacomo")]
