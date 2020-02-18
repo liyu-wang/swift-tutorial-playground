@@ -17,7 +17,6 @@ struct FlappyBird: Bird, Flyable {
     let name: String
     let flappyAmplitude: Double
     let flappyFrequency: Double
-    let canFly = true
 
     var airSpeedVelocity: Double {
         3 * flappyFrequency * flappyAmplitude
@@ -26,12 +25,10 @@ struct FlappyBird: Bird, Flyable {
 
 struct Penguin: Bird {
     let name: String
-    let canFly = false
 }
 
 struct SwiftBird: Bird, Flyable {
     var name: String { "Swift \(version)" }
-    let canFly = true
     let version: Double
     private var speedFactor = 1000.0
 
@@ -44,3 +41,52 @@ struct SwiftBird: Bird, Flyable {
         version * speedFactor
     }
 }
+
+// Extending Protocols With Default Implementations
+
+extension Bird {
+    // Flyable birds can fly!
+    var canFly: Bool { self is Flyable }
+}
+
+// Enums Can Play, Too
+
+enum UnladenSwallow: Bird, Flyable {
+    case african
+    case european
+    case unknown
+
+    var name: String {
+        switch self {
+        case .african:
+            return "African"
+        case .european:
+            return "European"
+        case .unknown:
+            return "What do you mean? African or European?"
+        }
+    }
+
+    var airSpeedVelocity: Double {
+        switch self {
+        case .african:
+            return 10
+        case .european:
+            return 9.9
+        case .unknown:
+            fatalError("You are thrown from the bridge of death!")
+        }
+    }
+}
+
+// Overriding Default Behavior
+
+extension UnladenSwallow {
+    var canFly: Bool {
+        self != .unknown
+    }
+}
+
+UnladenSwallow.unknown.canFly         // false
+UnladenSwallow.african.canFly         // true
+Penguin(name: "King Penguin").canFly  // false
