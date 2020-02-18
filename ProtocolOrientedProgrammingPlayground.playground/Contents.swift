@@ -2,9 +2,15 @@ import Foundation
 
 // Hatching the Egg
 
-protocol Bird {
+protocol Bird: CustomStringConvertible {
     var name: String { get }
     var canFly: Bool { get }
+}
+
+extension CustomStringConvertible where Self: Bird {
+    var description: String {
+        canFly ? "I can fly" : "Guess I'll just sit here :["
+    }
 }
 
 protocol Flyable {
@@ -90,3 +96,7 @@ extension UnladenSwallow {
 UnladenSwallow.unknown.canFly         // false
 UnladenSwallow.african.canFly         // true
 Penguin(name: "King Penguin").canFly  // false
+
+// Extending Protocols
+
+UnladenSwallow.african
