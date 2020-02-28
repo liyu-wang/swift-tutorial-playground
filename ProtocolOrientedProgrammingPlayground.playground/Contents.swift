@@ -195,3 +195,36 @@ extension Sequence where Iterator.Element == Racer {
 racers.topSpeed()
 racers[1...3].topSpeed()
 
+// Protocol Comparators
+
+protocol Score: Comparable {
+    var value: Int { get }
+}
+
+struct RacingScore: Score {
+    let value: Int
+
+    static func <(lhs: RacingScore, rhs: RacingScore) -> Bool {
+        lhs.value < rhs.value
+    }
+}
+
+RacingScore(value: 150) >= RacingScore(value: 130)
+
+// Mutating Functions
+
+protocol Cheat {
+    mutating func boost(_ power: Double)
+}
+
+extension SwiftBird: Cheat {
+    mutating func boost(_ power: Double) {
+        speedFactor += power
+    }
+}
+
+var swiftBird = SwiftBird(version: 5.0)
+swiftBird.boost(3.0)
+swiftBird.airspeedVelocity // 5015
+swiftBird.boost(3.0)
+swiftBird.airspeedVelocity // 5030
