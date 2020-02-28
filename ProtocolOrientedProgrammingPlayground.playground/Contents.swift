@@ -167,3 +167,31 @@ let racers: [Racer] =
  SwiftBird(version: 5.1),
  FlappyBird(name: "Felipe", flappyAmplitude: 3.0, flappyFrequency: 20.0),
  Motorcycle(name: "Giacomo")]
+
+// Top Speed
+
+func topSpeed0(of racers: [Racer]) -> Double {
+    racers.max(by: { $0.speed < $1.speed })?.speed ?? 0.0
+}
+
+topSpeed0(of: racers)
+
+// Making it more generic
+
+func topSpeed<RacersType: Sequence>(of racers: RacersType) -> Double
+    where RacersType.Iterator.Element == Racer {
+        racers.max(by: { $0.speed < $1.speed })?.speed ?? 0.0
+}
+
+topSpeed(of: racers[1...3])
+
+// Making it more swifty
+
+extension Sequence where Iterator.Element == Racer {
+    func topSpeed() -> Double {
+        self.max(by: { $0.speed < $1.speed })?.speed ?? 0.0
+    }
+}
+racers.topSpeed()
+racers[1...3].topSpeed()
+
